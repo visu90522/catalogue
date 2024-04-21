@@ -22,5 +22,17 @@ pipeline {
                 sh "ls -lrt"
             }
         }
+        stage('Deploy') {
+            steps {
+                echo "Deployment"
+            }
+        }
+    }
+
+    post{
+        always{
+            echo 'cleaning up workspace'
+            deleteDir()
+        }
     }
 }
