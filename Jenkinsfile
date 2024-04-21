@@ -24,11 +24,25 @@ pipeline {
             }
         }
         
-        stage('Publish') {
+        stage('Publish Artifact') {
             steps {
-                echo "publish"
+                 nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'http://54.221.33.82:8081/',
+                    groupId: 'com.roboshop',
+                    version: '1.0.0',
+                    repository: 'catalogue',
+                    credentialsId: 'nexus-auth',
+                    artifacts: [
+                        [artifactId: 'catalogue',
+                        classifier: '',
+                        file: 'catalogue.zip',
+                        type: 'zip']
+                        ]
+                    )
+                }
             }
-        }
     
         stage('Deploy') {
             steps {
@@ -36,7 +50,6 @@ pipeline {
             }
         }
     }
-
     post{
         always{
             echo 'cleaning up workspace'
