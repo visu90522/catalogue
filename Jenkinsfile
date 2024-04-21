@@ -75,7 +75,7 @@ pipeline {
         }
         stage('PROD Deploy'){
             when {
-                branch 'origin/main'
+                environment name: 'USER', value: 'vishwa'
             }
             steps{
                 echo "deploying to PROD"
