@@ -1,12 +1,14 @@
 pipeline {
     agent { node { label 'AGENT-1' } }
-        options {
+    options {
         timeout(time: 1, unit: 'HOURS') 
     }
-       environment { 
+    // triggers {
+    //     cron('* * * * *')
+    // }
+    environment { 
         USER = 'vishwa'
     }
-
     stages {
         stage('Build') {
             steps {
@@ -30,6 +32,7 @@ pipeline {
                 //error 'this is failed'
             }
         }
+    }
 
     post { 
         always { 
@@ -42,5 +45,4 @@ pipeline {
             echo 'I will run when failure'
         }
     }
-  }
 }
