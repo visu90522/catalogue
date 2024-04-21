@@ -19,9 +19,31 @@ pipeline {
         // }
         stage('Build') {
             steps {
-                sh "ls -lrt"
+                sh 'ls -ltr'
+                sh 'zip -r catalogue.zip ./* --exclude=.git --exclude=.zip'
             }
         }
+
+        stage('Publish Artifact') {
+            steps {
+                 nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: 'http://54.221.33.82:8081/',
+                    groupId: 'com.roboshop',
+                    version: '1.0.0',
+                    repository: 'catalogue',
+                    credentialsId: 'nexus-auth',
+                    artifacts: [
+                        [artifactId: 'catalogue',
+                        classifier: '',
+                        file: 'catalogue.zip',
+                        type: 'zip']
+                    ]
+                )
+            }
+        }
+    }
         stage('Deploy') {
             steps {
                 echo "Deployment"
@@ -32,7 +54,7 @@ pipeline {
     post{
         always{
             echo 'cleaning up workspace'
-            deleteDir()
+            //deleteDir()
         }
     }
 }
