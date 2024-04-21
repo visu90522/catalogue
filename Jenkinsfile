@@ -23,7 +23,6 @@ pipeline {
                 sh 'zip -r catalogue.zip ./* --exclude=.git --exclude=.zip'
             }
         }
-
         stage('Publish Artifact') {
             steps {
                  nexusArtifactUploader(
@@ -39,16 +38,16 @@ pipeline {
                         classifier: '',
                         file: 'catalogue.zip',
                         type: 'zip']
-                    ]
-                )
-            }
+                        ]
+                    )
+                }
+             }
         }
-    }
         stage('Deploy') {
             steps {
                 echo "Deployment"
+                }
             }
-        }
     }
 
     post{
